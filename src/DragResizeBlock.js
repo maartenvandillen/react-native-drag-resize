@@ -776,6 +776,7 @@ export class DragResizeBlock extends Component {
       children,
       isDisabled,
       zIndex,
+      padding,
     } = this.props;
 
     const {
@@ -794,7 +795,7 @@ export class DragResizeBlock extends Component {
           top: y,
           width: w,
           height: h,
-          padding: CONNECTOR_SIZE / 2,
+          padding,
           zIndex: isSelected ? zIndex + 1 : zIndex,
         }}
       >
@@ -848,6 +849,7 @@ DragResizeBlock.defaultProps = {
     CONNECTOR_CENTER,
   ],
   gridSize: 0,
+  padding: CONNECTOR_SIZE / 2,
 
   onPress: null,
   onDragStart: null,
@@ -882,6 +884,7 @@ DragResizeBlock.propTypes = {
   isResizable: PropTypes.bool,
   connectors: PropTypes.array,
   gridSize: PropTypes.number,
+  padding: PropTypes.number,
 
   onPress: PropTypes.func,
   onDragStart: PropTypes.func,
