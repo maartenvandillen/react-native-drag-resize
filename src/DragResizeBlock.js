@@ -16,7 +16,8 @@ import {
   CONNECTOR_BOTTOM_MIDDLE,
   CONNECTOR_BOTTOM_LEFT,
   CONNECTOR_MIDDLE_LEFT,
-  CONNECTOR_CENTER
+  CONNECTOR_CENTER,
+  CONNECTOR_CENTER_FULL,
 } from './Connector';
 
 export const AXIS_X = 'x';
@@ -185,6 +186,21 @@ export class DragResizeBlock extends Component {
       },
       calculateY: (height) => {
         return height / 2 - CONNECTOR_SIZE / 2;
+      },
+      onStart: this.onDragStart,
+      onMove: this.onDrag,
+      onEnd: this.onDragEnd,
+    };
+
+    /**
+     * Center connector full width and height (invisible).
+     */
+    this.connectorsMap[CONNECTOR_CENTER_FULL] = {
+      calculateX: (width) => {
+        return width / 2 - width / 2;
+      },
+      calculateY: (height) => {
+        return height / 2 - height / 2;
       },
       onStart: this.onDragStart,
       onMove: this.onDrag,
@@ -724,6 +740,8 @@ export class DragResizeBlock extends Component {
   renderConnectors = () => {
     const {
       connectors,
+      connectorStyle, 
+      customConnector,
     } = this.props;
 
     const {
@@ -736,12 +754,18 @@ export class DragResizeBlock extends Component {
         <Connector
           key={connectorType}
           type={connectorType}
+          width={w}
+          height={h}
+          connectorType={this.connectorsMap[connectorType]}
           size={CONNECTOR_SIZE}
           x={this.connectorsMap[connectorType].calculateX(w)}
           y={this.connectorsMap[connectorType].calculateY(h)}
           onStart={this.connectorsMap[connectorType].onStart}
           onMove={this.connectorsMap[connectorType].onMove}
           onEnd={this.connectorsMap[connectorType].onEnd}
+          onPress={this.onPress}
+          connectorStyle={connectorStyle}
+          customConnector={customConnector}
         />
       );
     });

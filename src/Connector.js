@@ -14,6 +14,7 @@ export const CONNECTOR_BOTTOM_MIDDLE = 'bm';
 export const CONNECTOR_BOTTOM_LEFT = 'bl';
 export const CONNECTOR_MIDDLE_LEFT = 'ml';
 export const CONNECTOR_CENTER = 'c';
+export const CONNECTOR_CENTER_FULL = 'cf';
 
 /**
  * Connector component for handle touch events.
@@ -98,22 +99,50 @@ export class Connector extends Component {
       x,
       y,
       size,
+      width,
+      height,
+      type,
+      connectorType,
+      connectorStyle,
+      customConnector,
     } = this.props;
 
-    return (
+    const PADDING = 12;
+    const CONNECTOR_CENTER_WIDTH = width - size - PADDING;
+    const CONNECTOR_CENTER_HEIGHT = height - size - PADDING;
+    const CONNECTOR_CENTER_LEFT = x + size / 2 + PADDING / 2;
+    const CONNECTOR_CENTER_RIGHT = y + size / 2 + PADDING / 2;
+
+    return type === CONNECTOR_CENTER_FULL ? (
       <View
         style={{
-          position: 'absolute',
-          left: x,
-          top: y,
-          width: size,
-          height: size,
-          borderWidth: 2,
-          borderColor: 'black',
-          backgroundColor: 'white'
+          position: "absolute",
+          backgroundColor: "transparent",
+          left: CONNECTOR_CENTER_LEFT,
+          top: CONNECTOR_CENTER_RIGHT,
+          width: CONNECTOR_CENTER_WIDTH,
+          height: CONNECTOR_CENTER_HEIGHT,
         }}
         {...this._panResponder.panHandlers}
       />
+    ) : (
+      <View
+        style={[
+          {
+            position: "absolute",
+            left: x,
+            top: y,
+            width: size,
+            height: size,
+            borderWidth: 1,
+            borderColor: "black",
+            backgroundColor: "white",
+          },
+          connectorStyle,
+        ]}
+        {...this._panResponder.panHandlers}>
+        {customConnector ? customConnector : null}
+      </View>
     );
   }
 }
@@ -122,6 +151,7 @@ Connector.propTypes = {
   x: PropTypes.number,
   y: PropTypes.number,
   size: PropTypes.number,
+  type: PropTypes.string,
   onStart: PropTypes.func.isRequired,
   onMove: PropTypes.func.isRequired,
   onEnd: PropTypes.func.isRequired,
