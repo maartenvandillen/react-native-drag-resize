@@ -560,11 +560,33 @@ export class DragResizeBlock extends Component {
    * @param {Array} coord - Press coordinate [x,y].
    */
   onResizeEnd = (coord) => {
+    
     const {
       onResizeEnd,
+      gridSize,
     } = this.props;
+    
+    let newX = this.state.x
+    let newY = this.state.y
+    let newW = this.state.w
+    let newH = this.state.h
 
+    //snap to grid
+    if (gridSize) {
+      newX = Math.floor((this.state.x / gridSize) + .5) * gridSize;
+      newY = Math.floor((this.state.y / gridSize) + .5) * gridSize;
+      newW = Math.floor((this.state.w / gridSize) + .5) * gridSize;
+      newH = Math.floor((this.state.h / gridSize) + .5) * gridSize;
+    }
+    
     this.setState(() => {
+      if (gridSize) {
+        this.state.x = newX
+        this.state.y = newY
+        this.state.w = newW
+        this.state.h = newH
+      }
+
       return {
         isSelected: false,
       };
@@ -572,10 +594,10 @@ export class DragResizeBlock extends Component {
 
     if (onResizeEnd !== null) {
       onResizeEnd([
-        this.state.x,
-        this.state.y,
-        this.state.w,
-        this.state.h
+        newX,
+        newY,
+        newW,
+        newH
       ]);
     }
   }
@@ -657,9 +679,30 @@ export class DragResizeBlock extends Component {
   onDragEnd = (coord) => {
     const {
       onDragEnd,
+      gridSize,
     } = this.props;
 
+    let newX = this.state.x
+    let newY = this.state.y
+    let newW = this.state.w
+    let newH = this.state.h
+
+    //snap to grid
+    if (gridSize) {
+      newX = Math.floor((this.state.x / gridSize) + .5) * gridSize;
+      newY = Math.floor((this.state.y / gridSize) + .5) * gridSize;
+      newW = Math.floor((this.state.w / gridSize) + .5) * gridSize;
+      newH = Math.floor((this.state.h / gridSize) + .5) * gridSize;
+    }
+
     this.setState(() => {
+      if (gridSize) {
+        this.state.x = newX
+        this.state.y = newY
+        this.state.w = newW
+        this.state.h = newH
+      }
+
       return {
         isSelected: false,
       };
@@ -667,10 +710,10 @@ export class DragResizeBlock extends Component {
 
     if (onDragEnd !== null) {
       onDragEnd([
-        this.state.x,
-        this.state.y,
-        this.state.w,
-        this.state.h
+        newX,
+        newY,
+        newW,
+        newH
       ]);
     }
   }
@@ -780,6 +823,7 @@ DragResizeBlock.defaultProps = {
     CONNECTOR_MIDDLE_LEFT,
     CONNECTOR_CENTER,
   ],
+  gridSize: 0,
 
   onPress: null,
   onDragStart: null,
@@ -813,6 +857,7 @@ DragResizeBlock.propTypes = {
   isDraggable: PropTypes.bool,
   isResizable: PropTypes.bool,
   connectors: PropTypes.array,
+  gridSize: PropTypes.number,
 
   onPress: PropTypes.func,
   onDragStart: PropTypes.func,
