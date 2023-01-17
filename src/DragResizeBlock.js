@@ -777,6 +777,7 @@ export class DragResizeBlock extends Component {
       isDisabled,
       zIndex,
       padding,
+      overlay,
     } = this.props;
 
     const {
@@ -786,6 +787,8 @@ export class DragResizeBlock extends Component {
       h,
       isSelected,
     } = this.state;
+
+    const Overlay = overlay
 
     return (
       <View
@@ -813,6 +816,17 @@ export class DragResizeBlock extends Component {
         </TouchableWithoutFeedback>
 
         {isDisabled ? null : this.renderConnectors()}
+
+        { !!overlay &&
+          <View style={{ position: 'absolute',
+            width: w,
+            height: h,
+            alignItems: "center",
+            justifyContent: "center",
+          }}>
+            <Overlay />
+          </View>
+        }
 
       </View>
     );
@@ -850,6 +864,7 @@ DragResizeBlock.defaultProps = {
   ],
   gridSize: 0,
   padding: CONNECTOR_SIZE / 2,
+  overlay: null,
 
   onPress: null,
   onDragStart: null,
@@ -885,6 +900,7 @@ DragResizeBlock.propTypes = {
   connectors: PropTypes.array,
   gridSize: PropTypes.number,
   padding: PropTypes.number,
+  overlay: PropTypes.element,
 
   onPress: PropTypes.func,
   onDragStart: PropTypes.func,
