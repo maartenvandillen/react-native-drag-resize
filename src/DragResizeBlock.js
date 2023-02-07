@@ -900,7 +900,7 @@ DragResizeBlock.propTypes = {
   connectors: PropTypes.array,
   gridSize: PropTypes.number,
   padding: PropTypes.number,
-  overlay: PropTypes.element,
+  overlay: PropTypes.func,
 
   onPress: PropTypes.func,
   onDragStart: PropTypes.func,
